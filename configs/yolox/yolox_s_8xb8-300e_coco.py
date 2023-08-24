@@ -3,7 +3,7 @@ _base_ = [
     './yolox_tta.py'
 ]
 
-img_scale = (384, 288)  # width, height
+img_scale = (640, 480)  # width, height
 
 # model settings
 model = dict(
