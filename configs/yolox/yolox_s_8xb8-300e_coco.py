@@ -148,12 +148,20 @@ test_pipeline = [
                    'scale_factor'))
 ]
 
+metainfo = {
+    'classes': ('gate', ),
+    'palette': [
+        (220, 20, 60),
+    ]
+}
+
 train_dataloader = dict(
     batch_size=64,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
-    dataset=train_dataset)
+    dataset=train_dataset,
+    metainfo=metainfo)
 val_dataloader = dict(
     batch_size=64,
     num_workers=8,
@@ -167,7 +175,8 @@ val_dataloader = dict(
         data_prefix=dict(img='images/'),
         test_mode=True,
         pipeline=test_pipeline,
-        backend_args=backend_args))
+        backend_args=backend_args),
+    metainfo=metainfo)
 test_dataloader = val_dataloader
 
 val_evaluator = dict(
