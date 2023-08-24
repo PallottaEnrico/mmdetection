@@ -3,7 +3,7 @@ _base_ = [
     './yolox_tta.py'
 ]
 
-img_scale = (640, 480)  # width, height
+img_scale = (384, 288)  # width, height
 
 # model settings
 model = dict(
@@ -189,7 +189,7 @@ val_evaluator = dict(
 test_evaluator = val_evaluator
 
 # training settings
-max_epochs = 100
+max_epochs = 200
 num_last_epochs = 15
 interval = 5
 
@@ -201,7 +201,7 @@ base_lr = 0.01
 optim_wrapper = dict(
     type='OptimWrapper',
     optimizer=dict(
-        type='SGD', lr=base_lr, momentum=0.9, weight_decay=5e-4,
+        type='AdamW', lr=base_lr, momentum=0.9, weight_decay=5e-4,
         nesterov=True),
     paramwise_cfg=dict(norm_decay_mult=0., bias_decay_mult=0.))
 
