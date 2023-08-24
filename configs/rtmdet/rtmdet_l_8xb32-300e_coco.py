@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_1x.py',
-    '../_base_/datasets/gate_detection_synt.py', './rtmdet_tta.py'
+    '../_base_/datasets/gate_detection.py', './rtmdet_tta.py'
 ]
 model = dict(
     type='RTMDet',
@@ -119,10 +119,10 @@ val_dataloader = dict(
     batch_size=5, num_workers=10, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-max_epochs = 300
+max_epochs = 100
 stage2_num_epochs = 20
 base_lr = 0.004
-interval = 10
+interval = 5
 
 train_cfg = dict(
     max_epochs=max_epochs,
