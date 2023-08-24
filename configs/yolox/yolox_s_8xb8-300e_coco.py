@@ -149,13 +149,13 @@ test_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=128,
+    batch_size=64,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     dataset=train_dataset)
 val_dataloader = dict(
-    batch_size=128,
+    batch_size=64,
     num_workers=8,
     persistent_workers=True,
     drop_last=False,
@@ -180,7 +180,7 @@ test_evaluator = val_evaluator
 # training settings
 max_epochs = 50
 num_last_epochs = 15
-interval = 1
+interval = 5
 
 train_cfg = dict(max_epochs=max_epochs, val_interval=interval)
 
