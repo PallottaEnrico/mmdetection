@@ -73,6 +73,14 @@ model = dict(
 data_root = '../mmpose/data/'
 dataset_type = 'CocoDataset'
 
+
+metainfo = {
+    'classes': ('gate',),
+    'palette': [
+        (220, 20, 60),
+    ]
+}
+
 # Example to use different file client
 # Method 1: simply set the data root and let the file I/O module
 # automatically infer from prefix (not support LMDB and Memcache yet)
@@ -131,7 +139,8 @@ train_dataset = dict(
             dict(type='LoadAnnotations', with_bbox=True)
         ],
         filter_cfg=dict(filter_empty_gt=False, min_size=32),
-        backend_args=backend_args),
+        backend_args=backend_args,
+        metainfo=metainfo),
     pipeline=train_pipeline)
 
 test_pipeline = [
@@ -148,20 +157,13 @@ test_pipeline = [
                    'scale_factor'))
 ]
 
-metainfo = {
-    'classes': ('gate', ),
-    'palette': [
-        (220, 20, 60),
-    ]
-}
 
 train_dataloader = dict(
     batch_size=64,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
-    dataset=train_dataset,
-    metainfo=metainfo)
+    dataset=train_dataset)
 val_dataloader = dict(
     batch_size=64,
     num_workers=8,
@@ -175,8 +177,8 @@ val_dataloader = dict(
         data_prefix=dict(img='images/'),
         test_mode=True,
         pipeline=test_pipeline,
-        backend_args=backend_args),
-    metainfo=metainfo)
+        backend_args=backend_args,
+        metainfo=metainfo))
 test_dataloader = val_dataloader
 
 val_evaluator = dict(
