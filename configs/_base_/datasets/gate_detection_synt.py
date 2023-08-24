@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'CocoDataset'
-data_root = '../synthetic_image_generator/output/dataset/'
+data_root = '~/synthetic_image_generator/output/dataset/'
 
 metainfo = {
     'classes': ('gate',),
