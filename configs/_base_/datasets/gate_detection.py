@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'CocoDataset'
-data_root = '../../mmpose/data/'
+data_root = '../mmpose/data/'
 
 metainfo = {
     'classes': ('gate',),
