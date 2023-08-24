@@ -3,7 +3,7 @@ _base_ = [
     './yolox_tta.py'
 ]
 
-img_scale = (640, 640)  # width, height
+img_scale = (640, 480)  # width, height
 
 # model settings
 model = dict(
@@ -70,7 +70,7 @@ model = dict(
     test_cfg=dict(score_thr=0.01, nms=dict(type='nms', iou_threshold=0.65)))
 
 # dataset settings
-data_root = 'data/coco/'
+data_root = '../mmpose/data/'
 dataset_type = 'CocoDataset'
 
 # Example to use different file client
@@ -95,11 +95,11 @@ train_pipeline = [
         scaling_ratio_range=(0.1, 2),
         # img_scale is (width, height)
         border=(-img_scale[0] // 2, -img_scale[1] // 2)),
-    dict(
-        type='MixUp',
-        img_scale=img_scale,
-        ratio_range=(0.8, 1.6),
-        pad_val=114.0),
+    # dict(
+    #     type='MixUp',
+    #     img_scale=img_scale,
+    #     ratio_range=(0.8, 1.6),
+    #     pad_val=114.0),
     dict(type='YOLOXHSVRandomAug'),
     dict(type='RandomFlip', prob=0.5),
     # According to the official implementation, multi-scale
@@ -124,8 +124,8 @@ train_dataset = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/instances_train2017.json',
-        data_prefix=dict(img='train2017/'),
+        ann_file='train.json',
+        data_prefix=dict(img='images/'),
         pipeline=[
             dict(type='LoadImageFromFile', backend_args=backend_args),
             dict(type='LoadAnnotations', with_bbox=True)
@@ -149,22 +149,22 @@ test_pipeline = [
 ]
 
 train_dataloader = dict(
-    batch_size=8,
-    num_workers=4,
+    batch_size=128,
+    num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     dataset=train_dataset)
 val_dataloader = dict(
-    batch_size=8,
-    num_workers=4,
+    batch_size=128,
+    num_workers=8,
     persistent_workers=True,
     drop_last=False,
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/instances_val2017.json',
-        data_prefix=dict(img='val2017/'),
+        ann_file='test.json',
+        data_prefix=dict(img='images/'),
         test_mode=True,
         pipeline=test_pipeline,
         backend_args=backend_args))
@@ -172,15 +172,15 @@ test_dataloader = val_dataloader
 
 val_evaluator = dict(
     type='CocoMetric',
-    ann_file=data_root + 'annotations/instances_val2017.json',
+    ann_file=data_root + 'test.json',
     metric='bbox',
     backend_args=backend_args)
 test_evaluator = val_evaluator
 
 # training settings
-max_epochs = 300
+max_epochs = 50
 num_last_epochs = 15
-interval = 10
+interval = 1
 
 train_cfg = dict(max_epochs=max_epochs, val_interval=interval)
 
