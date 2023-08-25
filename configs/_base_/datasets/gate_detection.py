@@ -58,7 +58,7 @@ flight01a_dataset = dict(
 combined_train_dataset = dict(
     type=dataset_type,
     metainfo=metainfo,
-    datasets=[manual_dataset, flight01a_dataset],
+    dataset=[manual_dataset, flight01a_dataset],
     pipeline=train_pipeline,
     filter_cfg=dict(filter_empty_gt=True, min_size=32),
     backend_args=backend_args
