@@ -56,7 +56,7 @@ flight01a_dataset = dict(
 )
 
 combined_train_dataset = dict(
-    type="CombinedDataset",
+    type=dataset_type,
     metainfo=metainfo,
     datasets=[manual_dataset, flight01a_dataset],
     pipeline=train_pipeline,
