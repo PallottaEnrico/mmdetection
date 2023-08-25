@@ -40,21 +40,38 @@ test_pipeline = [
         meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
                    'scale_factor'))
 ]
+
+manual_dataset = dict(
+    type=dataset_type,
+    data_root=data_root,
+    ann_file="train.json",
+    data_prefix=dict(img="images/")
+)
+
+flight01a_dataset = dict(
+    type=dataset_type,
+    data_root=data_root,
+    ann_file="flight-01a-ellipse.json",
+    data_prefix=dict(img="flight-01a-ellipse/images/")
+)
+
+combined_train_dataset = dict(
+    type="CombinedDataset",
+    metainfo=metainfo,
+    datasets=[manual_dataset, flight01a_dataset],
+    pipeline=train_pipeline,
+    filter_cfg=dict(filter_empty_gt=True, min_size=32),
+    backend_args=backend_args
+)
+
 train_dataloader = dict(
     batch_size=64,
     num_workers=8,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     batch_sampler=dict(type='AspectRatioBatchSampler'),
-    dataset=dict(
-        type=dataset_type,
-        data_root=data_root,
-        ann_file='train.json',
-        data_prefix=dict(img='images/'),
-        filter_cfg=dict(filter_empty_gt=True, min_size=32),
-        pipeline=train_pipeline,
-        backend_args=backend_args,
-        metainfo=metainfo))
+    dataset=combined_train_dataset)
+
 val_dataloader = dict(
     batch_size=64,
     num_workers=8,
