@@ -54,15 +54,15 @@ flight01a_dataset = dict(
     ann_file="flight-01a-ellipse.json",
     data_prefix=dict(img="flight-01a-ellipse/images/")
 )
-
-combined_train_dataset = dict(
-    type=dataset_type,
-    metainfo=metainfo,
-    dataset=[manual_dataset, flight01a_dataset],
-    pipeline=train_pipeline,
-    filter_cfg=dict(filter_empty_gt=True, min_size=32),
-    backend_args=backend_args
-)
+#
+# combined_train_dataset = dict(
+#     type=dataset_type,
+#     metainfo=metainfo,
+#     dataset=[manual_dataset, flight01a_dataset],
+#     pipeline=train_pipeline,
+#     filter_cfg=dict(filter_empty_gt=True, min_size=32),
+#     backend_args=backend_args
+# )
 
 train_dataloader = dict(
     batch_size=64,
@@ -70,7 +70,7 @@ train_dataloader = dict(
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=True),
     batch_sampler=dict(type='AspectRatioBatchSampler'),
-    dataset=combined_train_dataset)
+    dataset=[manual_dataset, flight01a_dataset])
 
 val_dataloader = dict(
     batch_size=64,
