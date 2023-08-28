@@ -91,7 +91,7 @@ train_pipeline_stage2 = [
         scale=(640, 640),
         ratio_range=(0.1, 2.0),
         keep_ratio=True),
-    dict(type='RandomCrop', crop_size=(640, 640)),
+    dict(type='RandomCrop', crop_size=(160, 160)),
     dict(type='YOLOXHSVRandomAug'),
     dict(type='RandomFlip', prob=0.5),
     dict(type='Pad', size=(640, 640), pad_val=dict(img=(114, 114, 114))),
@@ -119,8 +119,8 @@ val_dataloader = dict(
     batch_size=32, num_workers=8, dataset=dict(pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-max_epochs = 100
-stage2_num_epochs = 20
+max_epochs = 120
+stage2_num_epochs = 40
 base_lr = 0.004
 interval = 5
 
