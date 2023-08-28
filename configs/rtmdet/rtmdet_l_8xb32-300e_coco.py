@@ -105,12 +105,15 @@ val_dataloader = dict(
 test_dataloader = val_dataloader
 
 max_epochs = 120
+stage2_num_epochs = 20
 base_lr = 0.004
 interval = 5
 
 train_cfg = dict(
     max_epochs=max_epochs,
-    val_interval=interval)
+    val_interval=interval,
+    dynamic_intervals=[(max_epochs - stage2_num_epochs, 1)]
+)
 
 val_evaluator = dict(proposal_nums=(100, 1, 10))
 test_evaluator = val_evaluator
@@ -154,5 +157,9 @@ custom_hooks = [
         ema_type='ExpMomentumEMA',
         momentum=0.0002,
         update_buffers=True,
-        priority=49)
+        priority=49),
+    dict(
+        type='PipelineSwitchHook',
+        switch_epoch=max_epochs - stage2_num_epochs,
+        switch_pipeline=train_pipeline_stage2)
 ]
